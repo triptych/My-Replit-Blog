@@ -2,8 +2,8 @@
 import BaseHead from '../components/BaseHead.astro';
 import BlogPostPreview from '../components/BlogPostPreview.astro';
 
-const title = `Lawrence Chen's website`;
-let description = `Lawrence Chen's website`;
+const title = `Triptych: Blog`;
+let description = `My blog on Replit`;
 
 interface Frontmatter {
   title: string;
@@ -11,9 +11,10 @@ interface Frontmatter {
   published?: boolean;
   description?: string;
 }
-const unsortedPosts = await Astro.glob<Frontmatter>('./posts/*.mdx');
+const unsortedPosts = await Astro.glob<Frontmatter>(['./posts/*.md','./posts/*.mdx']);
 
 const posts = unsortedPosts.sort(function (a, b) {
+  if (a.frontmatter.publishDate === "future") return -Date.now() + 10;
   return (
     new Date(b.frontmatter.publishDate).valueOf() - new Date(a.frontmatter.publishDate).valueOf()
   );
